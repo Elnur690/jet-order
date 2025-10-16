@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * This is the ONLY custom CSS that should be in this file.
+ * These styles apply a consistent font and a soft background/text color
+ * to the entire application, creating our base design system.
+ * All other layout and styling is handled by Tailwind utility classes in our components.
+ */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc; /* slate-50 */
+  color: #334155; /* slate-700 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

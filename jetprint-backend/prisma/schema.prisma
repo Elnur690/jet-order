@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- ENUMS ---
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+enum OrderStage {
+  WAITING
+  DESIGN
+  PRINT_READY
+  PRINTING
+  CUT
+  COMPLETED
+  DELIVERED
+}
+
+enum PaperType {
+  GLOSS
+  MATTE
+  CARDSTOCK
+  VINYL
+  CUSTOM
+}
+
+
+// --- MODELS ---
+
+model User {
+  id        String    @id @default(cuid())
+  phone     String    @unique
+  role      UserRole  @default(STAFF)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  stages        Stage[]      @relation("StaffStages") // The stages this user is allowed to work on
+  stageClaims   StageClaim[] // The specific stage claims this user has made
+  createdOrders Order[]      // The orders this user has created
+}
+
+model Branch {
+  id     String  @id @default(cuid())
+  name   String  @unique
+  orders Order[]
+}
+
+// New model to define the stages themselves, manageable from the dashboard
+model Stage {
+  id    String     @id @default(cuid())
+  name  OrderStage @unique
+  users User[]     @relation("StaffStages") // The users assigned to this stage
+}
+
+model Order {
+  id            String     @id @default(cuid())
+  customerName  String?
+  customerPhone String
+  isUrgent      Boolean    @default(false)
+  shippingPrice Decimal?
+  notes         String?
+  currentStage  OrderStage @default(WAITING)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  // Relations
+  creatorId     String
+  creator       User       @relation(fields: [creatorId], references: [id])
+  branchId      String
+  branch        Branch     @relation(fields: [branchId], references: [id])
+  products      Product[]    // An order can now have multiple products
+  stageClaims   StageClaim[] // An order will have multiple claims over its lifetime
+}
+
+model Product {
+  id              String    @id @default(cuid())
+  name            String?
+  width           Decimal
+  height          Decimal
+  quantity        Int
+  price           Decimal
+  needsDesign     Boolean   @default(false)
+  designAmount    Decimal?
+  needsCut        Boolean   @default(false)
+  needsLamination Boolean   @default(false)
+  paperType       PaperType @default(GLOSS)
+
+  // Relations
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  files   File[]
+}
+
+model File {
+  id       String  @id @default(cuid())
+  url      String  // URL to the file in a storage bucket like S3
+  fileName String
+  fileType String  // e.g., 'image/png', 'application/pdf'
+  size     Int     // File size in bytes
+
+  // Relations
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+// Replaces the old 'Claim' model
+model StageClaim {
+  id          String     @id @default(cuid())
+  stage       OrderStage
+  claimedAt   DateTime   @default(now())
+  completedAt DateTime?
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}

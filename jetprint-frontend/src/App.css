@@ -1,0 +1,82 @@
+/* Glassmorphism global styles */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 2rem;
+  margin: 1rem 0;
+  transition: box-shadow 0.2s;
+}
+
+.glass-card:hover {
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  color: #222;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(31, 38, 135, 0.15);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 16px rgba(31, 38, 135, 0.25);
+}
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
