@@ -1,0 +1,29 @@
+# Node
+node_modules/
+npm-debug.log*
+.env
+.env.*
+.DS_Store
+.vscode/
+# Logs
+logs
+*.log
+pids
+*.pid
+# Dist
+dist/
+build/
+# TypeScript
+*.tsbuildinfo
+# Prisma
+prisma/migrations/
+# Frontend
+jetprint-frontend/node_modules/
+jetprint-frontend/dist/
+jetprint-frontend/.vite/
+# Backend
+jetprint-backend/node_modules/
+jetprint-backend/dist/
+jetprint-backend/.nestjs/
+# Uploads
+uploads/
